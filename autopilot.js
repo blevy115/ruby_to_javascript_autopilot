@@ -42,3 +42,25 @@ function drive(car, cityDistance){
   car['gas'] -= cityDistance;
   return 'Drove to '+car['city']+'. Remaining gas: '+getGasDisplay(car['gas'])+'.';
 }
+
+function dropOffPassengers(car){
+  previousPassengers = car['passengers'];
+  car['passengers']=0;
+  return 'Dropped off '+previousPassengers+' passengers.';
+}
+
+function act(car){
+  distanceBetweenCities = 50;
+  if(car['gas']<20){
+    fillUpGas(car);
+  }else if (car['passengers']<3){
+    pickUpPassenger(car);
+  }else{
+    if(car['gas']<distanceBetweenCities){
+      return fillUpGas(car);
+    }
+    droveTo = drive(car, distanceBetweenCities);
+    passengersDropped = dropOffPassengers(car);
+    return droveTo + passengersDropped;
+  }
+}
