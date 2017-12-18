@@ -1,17 +1,17 @@
 function getNewCar(){
-  newCar = {'city': 'Toronto', 'passengers':0, 'gas':100};
-  return newCar;
+  car = {'city': 'Toronto', 'passengers':0, 'gas':100};
+  return car;
 }
 
 function addCar(cars, newCar){
   cars.push(newCar);
-  console.log("Adding new car to fleet. Fleet size is now"+ cars.length);
+  return "Adding new car to fleet. Fleet size is now "+ cars.length + '.';
 }
 
 function pickUpPassenger(car){
   car['passengers'] ++;
   car['gas'] -= 10;
-  console.log('Picked up passenger. Car now has '+car['passengers']+' passengers.');
+  return 'Picked up passenger. Car now has '+car['passengers']+' passengers.';
 }
 
 function getDestination(car){
@@ -31,7 +31,7 @@ function fillUpGas(car){
 }
 
 function getGasDisplay(gasAmount){
-  return gasAmount+'%';
+  return gasAmount;
 }
 
 function drive(car, cityDistance){
@@ -40,7 +40,7 @@ function drive(car, cityDistance){
   }
   car['city'] = getDestination(car);
   car['gas'] -= cityDistance;
-  return 'Drove to '+car['city']+'. Remaining gas: '+getGasDisplay(car['gas'])+'.';
+  return 'Drove to '+car['city']+'. Remaining gas: '+getGasDisplay(car['gas'])+'%. ';
 }
 
 function dropOffPassengers(car){
@@ -52,9 +52,9 @@ function dropOffPassengers(car){
 function act(car){
   distanceBetweenCities = 50;
   if(car['gas']<20){
-    fillUpGas(car);
+    return fillUpGas(car);
   }else if (car['passengers']<3){
-    pickUpPassenger(car);
+    return pickUpPassenger(car);
   }else{
     if(car['gas']<distanceBetweenCities){
       return fillUpGas(car);
@@ -64,3 +64,22 @@ function act(car){
     return droveTo + passengersDropped;
   }
 }
+
+function commandFleet(cars){
+  for (var index = 0; index < cars.length; index ++){
+    action = act(cars[index]);
+    console.log('Car '+ (index + 1) + ': ' + action);
+  }
+  console.log('---');
+}
+
+function addOneCarPerDay(cars, numDays){
+  for (count = 0; count < numDays; count++){
+    newCar = getNewCar();
+    console.log(addCar(cars, newCar));
+    commandFleet(cars);
+  }
+}
+
+cars = []
+addOneCarPerDay(cars, 10)
